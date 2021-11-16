@@ -3,3 +3,9 @@ channels
 channels-redis
 psycopg2-binary
 whitenoise
+djangorestframework
+djangorestframework-simplejwt
+django-storages
+boto3
+django-simple-history
+django-cleanup

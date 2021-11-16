@@ -42,8 +42,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'base',
+    'households',
 
+    'simple_history',
     'channels',
+
+    'django_cleanup.apps.CleanupConfig',
 ]
 
 MIDDLEWARE = [
@@ -55,6 +59,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'simple_history.middleware.HistoryRequestMiddleware',
 ]
 
 ROOT_URLCONF = 'fdlr.urls'
@@ -132,6 +137,25 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# Minio
+
+DEFAULT_FILE_STORAGE = 'common.storages.MinioStorageInline'
+
+AWS_ACCESS_KEY_ID = env('MINIO_ROOT_USER')
+AWS_SECRET_ACCESS_KEY = env('MINIO_ROOT_PASSWORD')
+AWS_STORAGE_BUCKET_NAME = 'fdlr'
+AWS_QUERYSTRING_EXPIRE = 300
+AWS_DEFAULT_ACL = 'private'
+
+# Internal
+AWS_S3_ENDPOINT_URL = 'http://minio:9000'
+
+# External, used by MinioStorage class
+MINIO_EXTERNAL_URL = env('MINIO_EXTERNAL_URL')
+
+# Simple history tweak
+SIMPLE_HISTORY_FILEFIELD_TO_CHARFIELD = True
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

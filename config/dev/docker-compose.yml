@@ -38,6 +38,9 @@ services:
       - POSTGRES_USER
       - POSTGRES_PASSWORD
       - POSTGRES_DB
+      - MINIO_ROOT_USER
+      - MINIO_ROOT_PASSWORD
+      - MINIO_EXTERNAL_URL=http://${VIRTUAL_HOST_MINIO}
       - VIRTUAL_HOST=${VIRTUAL_HOST_DJANGO}
       - ALLOWED_HOSTS=${VIRTUAL_HOST},${VIRTUAL_HOST_DJANGO}
       - DEBUG=True
@@ -59,6 +62,44 @@ services:
       - ./src/frontend/craco.config.js:/app/craco.config.js
       - ./src/frontend/tailwind.config.js:/app/tailwind.config.js
 
+  minio:
+    image: bitnami/minio:2021.11.9
+    entrypoint: []
+    command: /bin/sh -c "mkdir -p /data/fdlr; exec /opt/bitnami/scripts/minio/entrypoint.sh /opt/bitnami/scripts/minio/run.sh"
+    environment:
+      - VIRTUAL_HOST=${VIRTUAL_HOST_MINIO}
+      - VIRTUAL_PORT=9000
+      - MINIO_ROOT_USER
+      - MINIO_ROOT_PASSWORD
+    volumes:
+      - minio:/data
+    networks:
+      - app
+      - proxy_fdlr_dev
+
+  mailhog:
+    image: mailhog/mailhog
+    environment:
+      - VIRTUAL_HOST=${VIRTUAL_HOST_MAILHOG}
+      - VIRTUAL_PORT=8025
+    expose:
+      - 1025
+      - 8025
+    networks:
+      - app
+      - proxy_fdlr_dev
+
+  adminer:
+    image: adminer
+    networks:
+      - app
+      - proxy_fdlr_dev
+    environment:
+      - ADMINER_DEFAULT_SERVER=postgres
+      - VIRTUAL_HOST=${VIRTUAL_HOST_ADMINER}
+      - VIRTUAL_PORT=8080
+    expose:
+      - 8080
 
 networks:
   proxy_fdlr_dev:

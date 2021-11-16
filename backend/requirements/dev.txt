@@ -23,6 +23,12 @@ autobahn==21.3.1
     # via daphne
 automat==20.2.0
     # via twisted
+boto3==1.20.6
+    # via -r base.in
+botocore==1.23.6
+    # via
+    #   boto3
+    #   s3transfer
 cffi==1.15.0
     # via cryptography
 channels==3.0.4
@@ -44,6 +50,21 @@ django==3.2.9
     # via
     #   -r base.in
     #   channels
+    #   django-storages
+    #   djangorestframework
+    #   djangorestframework-simplejwt
+django-cleanup==5.2.0
+    # via -r base.in
+django-simple-history==3.0.0
+    # via -r base.in
+django-storages==1.12.3
+    # via -r base.in
+djangorestframework==3.12.4
+    # via
+    #   -r base.in
+    #   djangorestframework-simplejwt
+djangorestframework-simplejwt==5.0.0
+    # via -r base.in
 hiredis==2.0.0
     # via aioredis
 hyperlink==21.0.0
@@ -56,6 +77,10 @@ idna==3.3
     #   twisted
 incremental==21.3.0
     # via twisted
+jmespath==0.10.0
+    # via
+    #   boto3
+    #   botocore
 msgpack==1.0.2
     # via channels-redis
 psycopg2-binary==2.9.2
@@ -68,16 +93,23 @@ pyasn1-modules==0.2.8
     # via service-identity
 pycparser==2.21
     # via cffi
+pyjwt==2.3.0
+    # via djangorestframework-simplejwt
 pyopenssl==21.0.0
     # via twisted
+python-dateutil==2.8.2
+    # via botocore
 pytz==2021.3
     # via django
+s3transfer==0.5.0
+    # via boto3
 service-identity==21.1.0
     # via twisted
 six==1.16.0
     # via
     #   automat
     #   pyopenssl
+    #   python-dateutil
     #   service-identity
 sqlparse==0.4.2
     # via django
@@ -89,6 +121,8 @@ typing-extensions==4.0.0
     # via
     #   async-timeout
     #   twisted
+urllib3==1.26.7
+    # via botocore
 whitenoise==5.3.0
     # via -r base.in
 zope.interface==5.4.0
