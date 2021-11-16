@@ -17,19 +17,16 @@ from os import environ
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-f#c_oy(lq5es)w4%k4ny_4lrgsy2bd5%u8gxfg#gyeyjhem3hp'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
 def env(key):
     if key in environ:
         return environ[key]
     return ''
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = env('SECRET_KEY') or 'insecure'
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = env('DEBUG') == 'True'
 
 ALLOWED_HOSTS = env('ALLOWED_HOSTS').split(',')
 
