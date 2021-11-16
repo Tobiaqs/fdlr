@@ -40,6 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'base',
+
     'channels',
 ]
 
@@ -72,7 +75,7 @@ TEMPLATES = [
     },
 ]
 
-ASGI_APPLICATION = "fdlr.asgi.application"
+ASGI_APPLICATION = 'fdlr.asgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
@@ -86,6 +89,8 @@ DATABASES = {
         'PASSWORD': env('POSTGRES_PASSWORD'),
     }
 }
+
+AUTH_USER_MODEL = 'base.User'
 
 
 # Password validation

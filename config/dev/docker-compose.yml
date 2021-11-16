@@ -56,6 +56,8 @@ services:
     volumes:
       - ./src/frontend/public/:/app/public/
       - ./src/frontend/src/:/app/src/
+      - ./src/frontend/craco.config.js:/app/craco.config.js
+      - ./src/frontend/tailwind.config.js:/app/tailwind.config.js
 
 
 networks:
