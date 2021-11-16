@@ -1,0 +1,68 @@
+version: "3.9"
+
+services:
+  redis:
+    image: redis:6.2-alpine
+    networks:
+      - app
+
+  postgres:
+    image: postgres:14.1
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    networks:
+      - app
+
+  nginx:
+    build:
+      context: ./src
+      target: dev-proxy
+    environment:
+      - VIRTUAL_HOST
+    networks:
+      - app
+      - proxy_fdlr_dev
+    depends_on:
+      - django
+      - react
+
+  django:
+    build:
+      context: ./src
+      target: dev-backend
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+      - VIRTUAL_HOST=${VIRTUAL_HOST_DJANGO}
+      - ALLOWED_HOSTS=${VIRTUAL_HOST},${VIRTUAL_HOST_DJANGO}
+      - DEBUG=True
+    volumes:
+      - ./src/backend/:/app/
+    networks:
+      - app
+      - proxy_fdlr_dev
+
+  react:
+    build:
+      context: ./src
+      target: dev-frontend
+    networks:
+      - app
+    volumes:
+      - ./src/frontend/public/:/app/public/
+      - ./src/frontend/src/:/app/src/
+
+
+networks:
+  proxy_fdlr_dev:
+    external: true
+  app:
+
+volumes:
+  postgres:
+  minio:
